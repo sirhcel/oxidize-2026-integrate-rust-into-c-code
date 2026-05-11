@@ -2,6 +2,19 @@
 
 ## Linux and macOS
 
+### Build Essentials
+
+* This workshop requires Git, CMake, Make, and Python Virtual Environment support
+* Install them
+    * On Linux with
+        ```
+        $ sudo apt install git build-essential cmake python3-venv
+        ```
+    * On macOS with
+        ```
+        $ brew install git cmake make
+        ```
+
 ### Rust
 
 * Make sure you have Rust for your Host system installed with [`rustup`](https://rustup.rs/)
@@ -50,6 +63,10 @@
     ```
 
 ## Windows
+
+### Build Essentials
+
+* All required tools will be installed by ESP-IDF later
 
 ### Rust
 

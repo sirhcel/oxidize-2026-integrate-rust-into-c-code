@@ -105,16 +105,13 @@
 * Create a directory for the workshop which will be called `workshop` from here on
 * Download the _ESP-IDF Installer Manager_ (EIM)
     * See section _Download_ from https://developer.espressif.com/tags/esp-idf/
-        ```
-        workshop> winget install Espressif.EIM-CLI
-        ```
     * I had no luck with downloading via `winget` but `curl` worked just fine for me
         ```
-        workshop> curl -O https://dl.espressif.com/github_assets/espressif/idf-im-ui/releases/download/v0.12.0/eim-cli-windows-x64.exe
+        workshop> curl -o eim-cli-windows-x64.exe https://dl.espressif.com/github_assets/espressif/idf-im-ui/releases/download/v0.12.0/eim-cli-windows-x64.exe
         ```
 * Install ESP-IDF version 5.4.3 in your workshop directory
     ```
-    workshop> eim-cli-windows-x64.exe install --idf-versions v5.3.4 --path C:\YOUR\WORKSHOP\DIR\HERE\esp-idf
+    workshop> .\eim-cli-windows-x64.exe install --idf-versions v5.3.4 --path C:\YOUR\WORKSHOP\DIR\HERE\esp-idf
     ```
 * The ESP-IDF sources get installed into the specified directory and toolchain and other tools into `C:\Espressif`
 * Start a new PowerShell for this installation with

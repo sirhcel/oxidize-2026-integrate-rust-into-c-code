@@ -4,7 +4,7 @@
 
 * Clone project repository into workshop directory as `project`
     ```
-    $ git clone https://github.com/sirhcel/rustweek-2026-integrate-rust-into-c-code project
+    workshop$ git clone https://github.com/sirhcel/rustweek-2026-integrate-rust-into-c-code project
     ```
 * Start project setup
     * On Linux and macOS
@@ -40,7 +40,7 @@
 
 * Flash it to the board and monitor debug output with
     ```
-    workshop/project$ idf.by flash monitor
+    workshop/project$ idf.py flash monitor
     ```
 * If there is only one ESP controller connected to the host, it will be targeted automatically
 * The T-Display S3 board should show the WiFi scanner on its screen

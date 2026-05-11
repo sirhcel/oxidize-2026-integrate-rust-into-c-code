@@ -17,9 +17,10 @@
     ```
     $ cargo install espup --locked
     ```
-* Install Espressif's Rust toolchain with
+* Install Espressif's Rust toolchain (and have the export script in the
+  same location on both platforms) with
     ```
-    $ espup install
+    $ espup install --export-file=$HOME/.espup/export-esp.sh
     ```
 * Setup the environment for it
     ```

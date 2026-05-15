@@ -1,4 +1,4 @@
-menu "Example Configuration"
+menu "WiFi Scanner Configuration"
 
     config EXAMPLE_SCAN_LIST_SIZE
         int "Max size of scan list"

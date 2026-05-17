@@ -133,7 +133,7 @@ static lv_timer_t *cycle_timer = NULL;
 static void init_styles(void) {
     lv_style_init(&label_style);
     lv_style_set_text_color(&label_style, lv_color_hex(0x657377));
-    lv_style_set_text_font(&label_style, &lv_font_montserrat_18);
+    lv_style_set_text_font(&label_style, &lv_font_montserrat_14);
 }
 
 
@@ -147,12 +147,12 @@ void init_details_screen(details_screen_t *screen, const char *title) {
     lv_obj_add_style(screen->title, &label_style, 0);
 
     screen->ssid = lv_label_create(view);
-    lv_obj_set_style_text_font(screen->ssid, &lv_font_montserrat_32, 0);
+    lv_obj_set_style_text_font(screen->ssid, &lv_font_montserrat_24, 0);
     screen->rssi = lv_label_create(view);
-    lv_obj_set_style_text_font(screen->rssi, &lv_font_montserrat_18, 0);
+    lv_obj_set_style_text_font(screen->rssi, &lv_font_montserrat_14, 0);
     lv_label_set_recolor(screen->rssi, true);
     screen->auth = lv_label_create(view);
-    lv_obj_set_style_text_font(screen->auth, &lv_font_montserrat_18, 0);
+    lv_obj_set_style_text_font(screen->auth, &lv_font_montserrat_14, 0);
     lv_label_set_recolor(screen->auth, true);
 }
 
@@ -164,12 +164,12 @@ void init_main_screen(main_screen_t *screen, const char *title) {
     lv_obj_set_flex_flow(view, LV_FLEX_FLOW_COLUMN);
 
     screen->title = lv_label_create(view);
-    lv_obj_set_style_text_font(screen->title, &lv_font_montserrat_32, 0);
+    lv_obj_set_style_text_font(screen->title, &lv_font_montserrat_24, 0);
     lv_label_set_text(screen->title, title);
 
     screen->status = lv_label_create(view);
     lv_obj_add_style(screen->status, &label_style, 0);
-    lv_obj_set_style_text_font(screen->status, &lv_font_montserrat_18, 0);
+    lv_obj_set_style_text_font(screen->status, &lv_font_montserrat_14, 0);
     lv_label_set_text(screen->status, "Scanning ...");
 }
 

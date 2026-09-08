@@ -3,8 +3,8 @@
 ## Overview
 
 This is the starting point for the
-[Workshop](https://2026.rustweek.org/workshops/integrate-rust-into-c/) at
-[RustWeek 2026](https://2026.rustweek.org/): A simple WiFi scanner running on
+[Workshop](https://oxidizeconf.com/sessions/integrate_rust_into_existing_embedded_c_applications) at
+[Oxidize 2026](https://oxidizeconf.com/): A simple WiFi scanner running on
 an ESP32-S3 controller on a [LilyGo T-Display
 S3](https://lilygo.cc/products/t-display-s3) board. 
 
@@ -45,8 +45,8 @@ application for testing the setup.
 
 If setup or building this application does not work out for you, please [open
 an
-issue](https://github.com/sirhcel/rustweek-2026-integrate-rust-into-c-code/issues/new)
+issue](https://github.com/sirhcel/oxidize-2026-integrate-rust-into-c-code/issues/new)
 in this project or ask a question on Matrix in the public chat
-[#rustweek-2026-integrate-rust-into-c:matrix.org](https://matrix.to/#/#rustweek-2026-integrate-rust-into-c:matrix.org).
+[#oxidize-2026-integrate-rust-into-c:matrix.org](https://matrix.to/#/#oxidize-2026-integrate-rust-into-c:matrix.org).
 You can enter the chat just with your browser by picking one of the clients
 with a web interface.

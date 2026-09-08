@@ -43,7 +43,7 @@
 ### ESP-IDF C Development Environment
 
 * In the very same shell session from [[#Rust Toolchain]]
-* Clone the repository for version 5.4.3
+* Clone the repository for version 5.3.4
     ```
     workshop$ git clone -b v5.3.4 --recursive https://github.com/espressif/esp-idf.git
     ```

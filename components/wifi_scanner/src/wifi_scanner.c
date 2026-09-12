@@ -77,7 +77,7 @@ static lv_img_dsc_t qr_img_dsc_1 = {
     .header.cf = LV_IMG_CF_TRUE_COLOR,
     .data = (uint8_t *)image_data_1,
 };
-static uint8_t image_data_2[PIXEL_BUFFER_LEN] = {0, };
+static uint16_t image_data_2[PIXEL_BUFFER_LEN] = {0, };
 static lv_img_dsc_t qr_img_dsc_2 = {
     .header.always_zero = 0,
     .header.w = 0,

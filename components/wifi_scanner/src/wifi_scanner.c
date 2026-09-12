@@ -24,6 +24,12 @@ static uint8_t channel_list[CHANNEL_LIST_SIZE] = {1, 6, 11};
 #define URI_BUFFER_LEN 256
 #define PIXEL_BUFFER_LEN 4096
 
+// The QR code is generated with one pixel per module, which is unreadably
+// small. Scaling it up by this factor costs vertical space, so it is capped by
+// the height of the details screen's lower row (roughly 115px, which fits a QR
+// code of up to 38 modules).
+#define QR_ZOOM_FACTOR 3
+
 
 static const char *TAG = "scan";
 
@@ -170,25 +176,75 @@ static void init_styles(void) {
     lv_style_set_text_font(&label_style, &lv_font_montserrat_14);
 }
 
+// Creates a bare layout container. Plain objects are styled as a "card" by the
+// default theme, whose border and padding would eat a good chunk of the 170px
+// screen height and draw visible boxes around the columns.
+static lv_obj_t *create_layout_container(lv_obj_t *parent, lv_flex_flow_t flow) {
+    lv_obj_t *container = lv_obj_create(parent);
+    lv_obj_remove_style_all(container);
+    lv_obj_set_flex_flow(container, flow);
+    // Aligning to the start keeps the content at the top of a column and leaves
+    // the remaining space below it flexible.
+    lv_obj_set_flex_align(container, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_set_style_pad_all(container, 0, 0);
+    lv_obj_set_style_pad_row(container, 4, 0);
+    lv_obj_set_style_pad_column(container, 8, 0);
+    return container;
+}
+
 void init_details_screen(details_screen_t *screen, const char *title, lv_img_dsc_t *qr_img_dsc) {
     screen->screen = lv_obj_create(NULL);
     lv_obj_t *view = lv_obj_create(screen->screen);
     lv_obj_set_size(view, LV_HOR_RES, LV_VER_RES);
     lv_obj_set_flex_flow(view, LV_FLEX_FLOW_COLUMN);
+    lv_obj_clear_flag(view, LV_OBJ_FLAG_SCROLLABLE);
 
     screen->title = lv_label_create(view);
     lv_obj_add_style(screen->title, &label_style, 0);
 
-    screen->ssid = lv_label_create(view);
+    // Everything below the title is laid out in two columns.
+    lv_obj_t *row = create_layout_container(view, LV_FLEX_FLOW_ROW);
+    lv_obj_set_width(row, lv_pct(100));
+    lv_obj_set_flex_grow(row, 1);
+
+    lv_obj_t *column_left = create_layout_container(row, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_height(column_left, lv_pct(100));
+    lv_obj_set_flex_grow(column_left, 1);
+
+    // The right column is only as wide as the QR code it holds, the left one
+    // takes whatever is left over.
+    lv_obj_t *column_right = create_layout_container(row, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_height(column_right, lv_pct(100));
+    lv_obj_set_width(column_right, LV_SIZE_CONTENT);
+
+    screen->ssid = lv_label_create(column_left);
     lv_obj_set_style_text_font(screen->ssid, &lv_font_montserrat_24, 0);
-    screen->rssi = lv_label_create(view);
+    // An SSID can be up to 32 characters long, which does not fit the left
+    // column, so cut it off with an ellipsis. The long mode has to be set
+    // before the width, otherwise it has no effect.
+    lv_label_set_long_mode(screen->ssid, LV_LABEL_LONG_DOT);
+    lv_obj_set_width(screen->ssid, lv_pct(100));
+    // Set the label's own padding to separate the SSID from the details below
+    // it. LVGL has no margins, and the column's row padding would also widen
+    // the gap between the RSSI and auth mode labels.
+    lv_obj_set_style_pad_bottom(screen->ssid, 8, 0);
+
+    screen->rssi = lv_label_create(column_left);
     lv_obj_set_style_text_font(screen->rssi, &lv_font_montserrat_14, 0);
     lv_label_set_recolor(screen->rssi, true);
-    screen->auth = lv_label_create(view);
+    screen->auth = lv_label_create(column_left);
     lv_obj_set_style_text_font(screen->auth, &lv_font_montserrat_14, 0);
     lv_label_set_recolor(screen->auth, true);
 
-    screen->qr = lv_img_create(view);
+    screen->qr = lv_img_create(column_right);
+    // Without the real size mode the widget keeps reporting its unscaled size,
+    // which would size the right column too small and clip the scaled QR code.
+    lv_img_set_size_mode(screen->qr, LV_IMG_SIZE_MODE_REAL);
+    // Anti-aliasing defaults to on for color depths above 8 bit and interpolates
+    // the scaled up image, which blurs the QR code's module edges. Turning it
+    // off switches the scaler to nearest neighbour, which is what we want here.
+    lv_img_set_antialias(screen->qr, false);
+    lv_img_set_zoom(screen->qr, QR_ZOOM_FACTOR * LV_IMG_ZOOM_NONE);
     lv_img_set_src(screen->qr, &empty_img_dsc);
     screen->qr_img_dsc = qr_img_dsc;
 }
@@ -281,14 +337,16 @@ static void cycle_timer_cb(lv_timer_t *timer) {
             img_dsc->header.h = width_and_height;
             img_dsc->data_size = sizeof(uint16_t) * img_dsc->header.w * img_dsc->header.h;
 
-            lv_obj_update_layout(new_details->screen);
-
             lv_img_set_src(new_details->qr, img_dsc);
         } else {
             ESP_LOGW(TAG, "generating WiFi QR code failed");
 
             lv_img_set_src(new_details->qr, &empty_img_dsc);
         }
+
+        // The width of the right column follows the size of the QR code, so the
+        // layout has to settle after the image has been set.
+        lv_obj_update_layout(new_details->screen);
 
         ap_info_index += 1;
     } else {

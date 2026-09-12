@@ -75,6 +75,10 @@ def get_user_choice():
 
 
 def perform_action(choice):
+    # LVGL is required by our wifi_scanner component and needs to get resolved
+    # before the first configuration run.
+    os.system('idf.py add-dependency "lvgl/lvgl^8.3.11"')
+
     if choice == 1:
         copy_file(
             os.path.join(current_directory, "sdkconfig.defaults.t4-s3"),
@@ -178,8 +182,6 @@ def perform_action(choice):
             "sdkconfig.defaults",
         )
         os.system("idf.py set-target esp32")
-
-    os.system('idf.py add-dependency "lvgl/lvgl^8.3.11"')
 
     os.system("idf.py reconfigure")
 

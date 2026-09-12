@@ -18,8 +18,6 @@
 * You will be asked for which target to build
     * Chose _T-Display S3_ (item number 7)
 * Configuration starts
-    * There will be an error message regarding LVGL not being found as a component
-    * This will be automatically resolved by the setup process and setup automatically restarted
 * A build of the application starts
     * There will be a warnings from `power_driver_init()` about missing initializers
     * None of them is critical for our project

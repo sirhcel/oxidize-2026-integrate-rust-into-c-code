@@ -4,7 +4,7 @@
 
 * Clone project repository into workshop directory as `project`
     ```
-    workshop$ git clone https://github.com/sirhcel/rustweek-2026-integrate-rust-into-c-code project
+    workshop$ git clone https://github.com/sirhcel/oxidize-2026-integrate-rust-into-c-code project
     ```
 * Start project setup
     * On Linux and macOS
